@@ -1,63 +1,36 @@
-import React, { useEffect, useState } from 'react';
-import axios from 'axios';
-import EmployeeCard from '../Components/EmployeeCard';
-import { toast } from 'react-toastify';
+import React from 'react';
+import { useNavigate } from 'react-router-dom';
 
-const AllEmployees = () => {
-    const [employees, setEmployees] = useState([]);
-    const [loading, setLoading] = useState(true);
-    const [error, setError] = useState(null);
+const EmployeeCard = ({ name, role, initials, id }) => {
+  const navigate = useNavigate();
 
-    console.log(employees);
+  const handleDetailClick = () => {
+    navigate(`/employee-detail/${id}`);
+  };
 
-    useEffect(() => {
-        const fetchEmployees = async() => {
-            try {
-                const response = await axios.get('http://147.93.119.175:5000/all-employees');
-                setEmployees(response.data.employees);
-            } catch (err) {
-                setError(err.response ? .data ? .message || 'Failed to fetch employees');
-            } finally {
-                setLoading(false);
-            }
-        };
+  return (
+    <div className="w-full max-w-sm bg-transparent border border-gray-500 rounded-lg shadow-lg dark:bg-gray-800 dark:border-gray-700 overflow-hidden">
+      {/* Profile Section */}
+      <div className="flex flex-col items-center py-6 px-4">
+        {/* Display initials inside a circle */}
+        <div className="w-24 h-24 mb-4 rounded-full bg-gray-800 text-gray-300 text-2xl flex items-center justify-center font-bold shadow-lg border-4 border-teal-400">
+          {initials}
+        </div>
+        <h5 className="mb-1 text-xl font-semibold text-gray-200 dark:text-white">{name}</h5>
+        <span className="text-sm text-gray-400 dark:text-gray-500">{role}</span>
 
-        fetchEmployees();
-    }, []);
-
-    // Helper function to get initials from the name
-    const getInitials = (name) => {
-        const nameParts = name.split(' ');
-        const firstName = nameParts[0];
-        const lastName = nameParts[1] || '';
-        return (firstName.charAt(0) + lastName.charAt(0)).toUpperCase();
-    };
-
-    // Loading and error states
-    if (loading) return <p className = 'text-white text-xl' > Loading... < /p>;
-    if (error) return <p className = 'text-white text-xl' > Something went wrong.Try again later! < /p>;
-
-    return ( <
-        div className = "max-w-full mx-auto px-6 rounded shadow-md" >
-        <
-        h2 className = "text-gray-100 text-3xl font-bold" > All Employees < /h2> <
-        p className = "text-gray-500 mt-2 mb-4" > See a list of Employees < /p>
-
-        <
-        div className = "grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4" > {
-            employees.map((employee) => ( <
-                EmployeeCard key = { employee._id }
-                id = { employee._id }
-                name = { employee.name }
-                role = { employee.role }
-                description = { employee.description }
-                initials = { getInitials(employee.name) }
-                />
-            ))
-        } <
-        /div> <
-        /div>
-    );
+        {/* Buttons Section */}
+        <div className="flex mt-6">
+          <button
+            onClick={handleDetailClick}
+            className="py-2 px-6 text-md text-white bg-[#36BCBA] font-semibold rounded-lg border border-transparent hover:bg-[#2a9c94] transition duration-200 ease-in-out transform hover:scale-105 focus:outline-none focus:ring-4 focus:ring-[#36BCBA]/50"
+          >
+            See Details
+          </button>
+        </div>
+      </div>
+    </div>
+  );
 };
 
-export default AllEmployees;
+export default EmployeeCard;
