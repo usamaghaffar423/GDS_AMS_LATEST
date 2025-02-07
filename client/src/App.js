@@ -80,6 +80,7 @@ const App = () => {
         <Route path="/" element={<Login />} />
         <Route path="/login" element={<Login />} />
         <Route path="/logout" element={<Logout />} />
+        <Route path="/dashboard" element={<Dashboard />} />
 
         {/* Protected Routes */}
         <Route
@@ -88,14 +89,14 @@ const App = () => {
             <Layout>
               <Routes>
                 {/* Admin and Employee Access */}
-                <Route
-                  path="/dashboard"
-                  element={
-                    <ProtectedRoute allowedRoles={['Admin', 'Employee']}>
-                      <Dashboard />
-                    </ProtectedRoute>
-                  }
-                />
+                // <Route
+                //   path="/dashboard"
+                //   element={
+                //     <ProtectedRoute allowedRoles={['Admin', 'Employee']}>
+                //       <Dashboard />
+                //     </ProtectedRoute>
+                //   }
+                // />
                 <Route
                   path="/all-employees"
                   element={
